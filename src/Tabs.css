@@ -1,0 +1,22 @@
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+  background-color: #f4f4f4;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+.tab-button.selected {
+  background-color: #ddd;
+}

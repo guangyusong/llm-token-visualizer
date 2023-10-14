@@ -1,0 +1,100 @@
+.App {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	margin: 0;
+}
+
+.App-header {
+	padding: 3rem;
+	background-color: white;
+	color: #333;
+	border-radius: 10px;
+	max-width: 600px;
+	width: 100%;
+}
+
+label {
+	font-weight: bold;
+	margin-top: 1.5rem;
+}
+
+h2 {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+}
+
+#tokenizer-input,
+.disabled-textarea {
+	width: 100%;
+	padding: 0.5rem;
+	margin: 0.5rem 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	resize: vertical;
+}
+
+.tokenizer-buttons {
+	display: flex;
+	justify-content: space-between;
+	margin: 1rem 0;
+}
+
+.tokenizer-buttons button {
+	padding: 0.5rem 1rem;
+	border: none;
+	background-color: #333;
+	color: white;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	border-radius: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.tokenizer-buttons button:hover {
+	background-color: #555;
+}
+
+.disabled-textarea {
+	background-color: #f7f7f7;
+	cursor: not-allowed;
+}
+
+.tokens-visualized {
+	max-height: 200px;
+	overflow-y: auto;
+	margin-top: 20px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	whitespace: 'pre-wrap';
+	height: 100px;
+}
+
+.tabs-container {
+	display: flex;
+	justify-content: space-between;
+	margin: 1rem 0;
+}
+
+.token-span {
+	padding: 0.25rem 0.5rem;
+	display: inline-block;
+	margin: 0 2px;
+	border-radius: 4px;
+}
+
+.counts {
+	display: flex;
+	gap: 20px;
+}
+
+.button-container {
+	display: flex;
+	gap: 10px;
+}
