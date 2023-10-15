@@ -4,9 +4,11 @@ import './Tabs.css';
 import { useEffect, useState } from 'react';
 
 import { getEncoding } from 'js-tiktoken';
+// @ts-ignore
+import llamaTokenizer from 'llama-tokenizer-js';
 
 type EncodedToken = [substring: string, token: number];
-type TiktokenEncoding = 'gpt2' | 'r50k_base' | 'p50k_base' | 'p50k_edit' | 'cl100k_base';
+type EncodingType = 'gpt2' | 'r50k_base' | 'p50k_base' | 'p50k_edit' | 'cl100k_base' | 'llama';
 
 const convertNumberToColor = (number: number): string => {
 	const GOLDEN_RATIO_CONJUGATE = 0.618033988749895;
@@ -14,9 +16,25 @@ const convertNumberToColor = (number: number): string => {
 	return `hsl(${hue}, 60%, 85%)`;
 };
 
-const encodeTextToTokens = (text: string, tiktoken: any): EncodedToken[] => {
-	const tokens = tiktoken.encode(text);
-	return tokens.map((token: any): EncodedToken => [tiktoken.decode([token]), token]);
+const encodeTextToTokens = (text: string, encodingType: EncodingType): EncodedToken[] => {
+	if (encodingType === 'llama') {
+		const encodedTokens = llamaTokenizer.encode(text);
+		return encodedTokens.map((token: number): EncodedToken => {
+			const chars = llamaTokenizer.decode([token], false, false);
+			let decodedToken;
+			if (token === 0) decodedToken = '<unk>';
+			else if (token === 1) decodedToken = '<s>';
+			else if (token === 2) decodedToken = '</s>';
+			else if (token >= 3 && token <= 258) decodedToken = llamaTokenizer.vocabById[token];
+			else decodedToken = chars;
+			return [decodedToken, token];
+		});
+	} else {
+		const tiktoken = getEncoding(encodingType);
+		return tiktoken
+			.encode(text)
+			.map((token: number): EncodedToken => [tiktoken.decode([token]), token]);
+	}
 };
 
 const TextWithColors = ({ encodedTokens }: { encodedTokens: EncodedToken[] }) => {
@@ -41,7 +59,7 @@ const App = () => {
 	const [encodedTokens, setEncodedTokens] = useState<EncodedToken[]>([]);
 	const [tokenCount, setTokenCount] = useState(0);
 	const [charCount, setCharCount] = useState(0);
-	const [encodingType, setEncodingType] = useState<TiktokenEncoding>('cl100k_base');
+	const [encodingType, setEncodingType] = useState<EncodingType>('cl100k_base');
 
 	const handleTextInputChange = (e: any) => {
 		setInputValue(e.target.value);
@@ -54,10 +72,9 @@ const App = () => {
 
 	useEffect(() => {
 		setCharCount(inputValue.length);
-		setTokenCount(inputValue.split(/\s+/).filter(Boolean).length);
-
-		const tiktoken = getEncoding(encodingType);
-		setEncodedTokens(encodeTextToTokens(inputValue, tiktoken));
+		const tokens = encodeTextToTokens(inputValue, encodingType);
+		setEncodedTokens(tokens);
+		setTokenCount(tokens.length);
 	}, [inputValue, encodingType]);
 
 	return (
@@ -68,11 +85,12 @@ const App = () => {
 					{[
 						{ key: 'gpt2', label: 'GPT2' },
 						{ key: 'cl100k_base', label: 'GPT3.5 / GPT4' },
+						{ key: 'llama', label: 'LLaMA' },
 					].map(({ key, label }) => (
 						<button
 							key={key}
 							className={`tab-button ${encodingType === key ? 'selected' : ''}`}
-							onClick={() => setEncodingType(key as TiktokenEncoding)}
+							onClick={() => setEncodingType(key as EncodingType)}
 						>
 							{label}
 						</button>

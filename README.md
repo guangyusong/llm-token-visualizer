@@ -25,6 +25,10 @@ A simple React application to visualize how text is tokenized by large language 
 
 Enjoy token visualization!
 
+## Credit
+
+- LLaMA tokenizer from https://github.com/belladoreai/llama-tokenizer-js
+
 ## License
 
 MIT
