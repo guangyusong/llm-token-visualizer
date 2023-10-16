@@ -2,7 +2,7 @@
 
 A simple React application to visualize how text is tokenized by large language models (LLMs) using the js-tiktoken library.
 
-![Screenshot 2023-10-14 at 8 21 20 PM](https://github.com/guangyusong/llm-token-visualizer/assets/15316444/9cf94d0f-6159-4144-a0e9-a22ecc7039a6)
+<img width="945" alt="Screenshot 2023-10-15 at 9 12 38 PM" src="https://github.com/guangyusong/llm-token-visualizer/assets/15316444/cac69bb1-0c32-4d4a-a827-07babdf45e08">
 
 ## Features
 
